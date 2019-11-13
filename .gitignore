@@ -1,0 +1,12 @@
+__pycache__
+*.pyc
+build
+dist
+.DS_Store
+.log
+.vscode
+*.log
+.venv
+.coverage
+.coverage.*
+htmlcov
