@@ -13,6 +13,11 @@ TEST_VIRTUAL_ENV=.venv
 $(TEST_VIRTUAL_ENV):
 	$(MAKE) test-env-create
 
+PHONY: test
+test: $(TEST_VIRTUAL_ENV)
+	export PYTHONPATH=$(shell echo $${PYTHONPATH}):$(PWD)/src && \
+	$(TEST_VIRTUAL_ENV)/bin/py.test -vv $(args)
+
 .PHONY: test-env-create
 test-env-create: virtualenv-installed
 	[ -d $(TEST_VIRTUAL_ENV) ] || virtualenv -p python3 $(TEST_VIRTUAL_ENV)
@@ -20,13 +25,16 @@ test-env-create: virtualenv-installed
 	$(TEST_VIRTUAL_ENV)/bin/pip install -r ./requirements.txt
 	$(TEST_VIRTUAL_ENV)/bin/pip install -r ./requirements.test.txt
 
-virtualenv-installed:
-	$(PROJECT_ROOT)/bin/virtualenv_ensure_installed.sh
+.PHONY: test-format
+test-format: $(TEST_VIRTUAL_ENV)
+	$(TEST_VIRTUAL_ENV)/bin/black --check src
 
-PHONY: test
-test: $(TEST_VIRTUAL_ENV)
-	export PYTHONPATH=$(shell echo $${PYTHONPATH}):$(PWD)/src && \
-	$(TEST_VIRTUAL_ENV)/bin/py.test -vv $(args)
+.PHONY: test-lint
+test-lint: $(TEST_VIRTUAL_ENV)
+	$(TEST_VIRTUAL_ENV)/bin/flake8 .
 
+test-all: test-format test-lint
+
+.PHONY: virtualenv-installed
 virtualenv-installed:
 	$(PROJECT_ROOT)/bin/virtualenv_ensure_installed.sh
