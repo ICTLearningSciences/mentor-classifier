@@ -75,10 +75,18 @@ class TrainLSTMClassifier(ClassifierTraining):
         self.topic_model, new_vectors = self.__train_lstm(
             lstm_train_data, x_train, y_train
         )
-        x_train_fused, y_train_fused, x_train_unfused, y_train_unfused = self.__load_fused_unfused(
-            train_vectors, new_vectors
-        )
-        scores, accuracy, self.logistic_model_fused, self.logistic_model_unfused = self.__train_lr(
+        (
+            x_train_fused,
+            y_train_fused,
+            x_train_unfused,
+            y_train_unfused,
+        ) = self.__load_fused_unfused(train_vectors, new_vectors)
+        (
+            scores,
+            accuracy,
+            self.logistic_model_fused,
+            self.logistic_model_unfused,
+        ) = self.__train_lr(
             x_train_fused,
             y_train_fused,
             x_train_unfused,

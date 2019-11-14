@@ -13,6 +13,10 @@ TEST_VIRTUAL_ENV=.venv
 $(TEST_VIRTUAL_ENV):
 	$(MAKE) test-env-create
 
+.PHONY: format
+format: $(TEST_VIRTUAL_ENV)
+	$(TEST_VIRTUAL_ENV)/bin/black mentorpal
+
 PHONY: test
 test: $(TEST_VIRTUAL_ENV)
 	export PYTHONPATH=$(shell echo $${PYTHONPATH}):$(PWD)/src && \
@@ -22,18 +26,17 @@ test: $(TEST_VIRTUAL_ENV)
 test-env-create: virtualenv-installed
 	[ -d $(TEST_VIRTUAL_ENV) ] || virtualenv -p python3 $(TEST_VIRTUAL_ENV)
 	$(TEST_VIRTUAL_ENV)/bin/pip install --upgrade pip
-	$(TEST_VIRTUAL_ENV)/bin/pip install -r ./requirements.txt
 	$(TEST_VIRTUAL_ENV)/bin/pip install -r ./requirements.test.txt
 
 .PHONY: test-format
 test-format: $(TEST_VIRTUAL_ENV)
-	$(TEST_VIRTUAL_ENV)/bin/black --check src
+	$(TEST_VIRTUAL_ENV)/bin/black --check mentorpal
 
 .PHONY: test-lint
 test-lint: $(TEST_VIRTUAL_ENV)
 	$(TEST_VIRTUAL_ENV)/bin/flake8 .
 
-test-all: test-format test-lint
+test-all: test-format test-lint test
 
 .PHONY: virtualenv-installed
 virtualenv-installed:
