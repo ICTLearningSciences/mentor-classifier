@@ -105,4 +105,3 @@ workflows:
           requires:
             - test
           additional_tag: $CIRCLE_TAG
-
