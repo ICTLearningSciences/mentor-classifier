@@ -101,7 +101,7 @@ workflows:
           requires:
             - test-lint
       - build-and-push:
-          additional_tag: $CIRCLE_TAG
           filter: *only-tagged-releases
           requires:
             - test
+          additional_tag: $CIRCLE_TAG
