@@ -43,27 +43,33 @@ jobs:
         default: false
     executor: docker/docker
     steps:
-      - run: 
-          name: "set image tag to (default) sha"
-          command: |
-            echo 'export IMAGE_TAG="$CIRCLE_SHA"' >> $BASH_ENV
+      - unless:
+          condition: <<parameters.is-release-tag>>
+          steps:
+            - run: 
+                name: "set image tag to commit sha ($CIRCLE_SHA1)"
+                command: |
+                  echo 'export IMAGE_TAG="$CIRCLE_SHA1"' >> $BASH_ENV
       - when:
           condition: <<parameters.is-release-tag>>
           steps:
             - run: 
-                name: "override image tag to release tag"
+                name: "override image tag to release tag ($CIRCLE_TAG")"
                 command: |
                   echo 'export IMAGE_TAG="$CIRCLE_TAG"' >> $BASH_ENV
+      - run:
+          name: report tag
+          command: echo "building tag uscictdocker/mentorpal-classifier:${IMAGE_TAG}..."
       - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
           image: uscictdocker/mentorpal-classifier
-          tag: $IMAGE_TAG
+          tag: ${IMAGE_TAG}
       - docker/push:
           digest-path: /tmp/digest.txt
           image: uscictdocker/mentorpal-classifier
-          tag: $IMAGE_TAG
+          tag: ${IMAGE_TAG}
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
