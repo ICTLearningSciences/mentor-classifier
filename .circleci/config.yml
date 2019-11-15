@@ -3,6 +3,8 @@ executors:
   python:
     docker:
       - image: circleci/python:3.6.9
+orbs:
+  docker: circleci/docker@0.5.17
 jobs:
   test-format:
     executor: python
@@ -25,6 +27,20 @@ jobs:
       - run:
           name: Run tests
           command: make test
+  build-and-push:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: uscictdocker/mentorpal-classifier
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: uscictdocker/mentorpal-classifier
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
 workflows:
   version: 2
   test-build-deploy:
@@ -36,4 +52,10 @@ workflows:
       - test:
           requires:
             - test-lint
-
+      - approve-build-and-push:
+          type: approval
+          requires:
+            - test
+      - build-and-push:
+          requires:
+            - approve-build-and-push
