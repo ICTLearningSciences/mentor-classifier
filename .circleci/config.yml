@@ -69,7 +69,7 @@ workflows:
   version: 2
   test-build-deploy:
     jobs:
-      - test-format
+      - test-format:
           filter: *only-untagged
       - test-lint:
           filter: *only-untagged
