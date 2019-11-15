@@ -1,4 +1,13 @@
 version: 2.1
+aliases:
+  - &only-tagged-releases
+    tags:
+      only: /v[0-9]+(\.[0-9]+)*(-[a-z\d\-.]+)?/
+    branches:
+      ignore: /.*/
+  - &only-untagged
+    tags:
+      ignore: /.*/
 executors:
   python:
     docker:
@@ -28,6 +37,10 @@ jobs:
           name: Run tests
           command: make test
   build-and-push:
+  parameters:
+      additional_tag:
+        type: string
+        default: ""
     executor: docker/docker
     steps:
       - setup_remote_docker
@@ -41,21 +54,54 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
+      - when:
+          condition: <<parameters.additional_tag>>
+          steps:
+            - docker/push:
+                digest-path: /tmp/digest-release.txt
+                image: uscictdocker/mentorpal-classifier
+                tag: <<parameters.additional_tag>>
+            - run:
+              command: |
+                echo "Digest is: $(</tmp/digest-release.txt)"
+      
 workflows:
   version: 2
   test-build-deploy:
     jobs:
       - test-format
+          filter: *only-untagged
       - test-lint:
+          filter: *only-untagged
           requires:
             - test-format
       - test:
+          filter: *only-untagged
           requires:
             - test-lint
       - approve-build-and-push:
+          filter: *only-untagged
           type: approval
           requires:
             - test
       - build-and-push:
+          filter: *only-untagged
           requires:
             - approve-build-and-push
+  test-build-deploy-release:
+    jobs:
+      - test-format:
+          filter: *only-tagged-releases
+      - test-lint:
+          filter: *only-tagged-releases
+          requires:
+            - test-format
+      - test:
+          filter: *only-tagged-releases
+          requires:
+            - test-lint
+      - build-and-push:
+          filter: *only-tagged-releases
+          requires:
+            - test
+          additional_tag: $CIRCLE_TAG
