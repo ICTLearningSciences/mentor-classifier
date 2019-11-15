@@ -37,7 +37,7 @@ jobs:
           name: Run tests
           command: make test
   build-and-push:
-  parameters:
+    parameters:
       additional_tag:
         type: string
         default: ""
