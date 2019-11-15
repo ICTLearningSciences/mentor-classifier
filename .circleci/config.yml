@@ -70,38 +70,38 @@ workflows:
   test-build-deploy:
     jobs:
       - test-format:
-          filter: *only-untagged
+          filters: *only-untagged
       - test-lint:
-          filter: *only-untagged
+          filters: *only-untagged
           requires:
             - test-format
       - test:
-          filter: *only-untagged
+          filters: *only-untagged
           requires:
             - test-lint
       - approve-build-and-push:
-          filter: *only-untagged
+          filters: *only-untagged
           type: approval
           requires:
             - test
       - build-and-push:
-          filter: *only-untagged
+          filters: *only-untagged
           requires:
             - approve-build-and-push
   test-build-deploy-release:
     jobs:
       - test-format:
-          filter: *only-tagged-releases
+          filters: *only-tagged-releases
       - test-lint:
-          filter: *only-tagged-releases
+          filters: *only-tagged-releases
           requires:
             - test-format
       - test:
-          filter: *only-tagged-releases
+          filters: *only-tagged-releases
           requires:
             - test-lint
       - build-and-push:
-          filter: *only-tagged-releases
+          additional_tag: $CIRCLE_TAG
+          filters: *only-tagged-releases
           requires:
             - test
-          additional_tag: $CIRCLE_TAG
