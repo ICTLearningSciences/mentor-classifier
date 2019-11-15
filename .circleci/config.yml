@@ -38,7 +38,7 @@ jobs:
           command: make test
   build-and-push:
     parameters:
-      additional_tag:
+      additional-tag:
         type: string
         default: ""
     executor: docker/docker
@@ -55,7 +55,7 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
       - when:
-          condition: <<parameters.additional_tag>>
+          condition: <<parameters.additional-tag>>
           steps:
             - docker/push:
                 digest-path: /tmp/digest-release.txt
@@ -100,7 +100,7 @@ workflows:
           requires:
             - test-lint
       - build-and-push:
-          additional_tag: "0.0.1"
+          additional-tag: "0.0.1"
           filters: *only-tagged-releases
           requires:
             - test
