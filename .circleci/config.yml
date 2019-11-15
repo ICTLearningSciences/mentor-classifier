@@ -60,7 +60,7 @@ jobs:
             - docker/push:
                 digest-path: /tmp/digest-release.txt
                 image: uscictdocker/mentorpal-classifier
-                tag: <<parameters.additional_tag>>
+                tag: "0.0.1"
             - run:
               command: |
                 echo "Digest is: $(</tmp/digest-release.txt)"
