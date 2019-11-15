@@ -51,9 +51,9 @@ jobs:
       - docker/push:
           digest-path: /tmp/digest.txt
           image: uscictdocker/mentorpal-classifier
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
+      # - run:
+      #     command: |
+      #       echo "Digest is: $(</tmp/digest.txt)"
       - when:
           condition: <<parameters.additional-tag>>
           steps:
@@ -61,9 +61,9 @@ jobs:
                 digest-path: /tmp/digest-release.txt
                 image: uscictdocker/mentorpal-classifier
                 tag: "0.0.1"
-            - run:
-              command: |
-                echo "Digest is: $(</tmp/digest-release.txt)"
+            # - run:
+            #   command: |
+            #     echo "Digest is: $(</tmp/digest-release.txt)"
       
 workflows:
   test-build-deploy:
