@@ -38,9 +38,9 @@ jobs:
           command: make test
   build-and-push:
     parameters:
-      additional-tag:
+      image-tag:
         type: string
-        default: ""
+        default: $CIRCLE_SHA
     executor: docker/docker
     steps:
       - setup_remote_docker
@@ -48,26 +48,14 @@ jobs:
       - docker/check
       - docker/build:
           image: uscictdocker/mentorpal-classifier
+          tag: <<image-tag>>
       - docker/push:
           digest-path: /tmp/digest.txt
           image: uscictdocker/mentorpal-classifier
-      - unless:
-          condition: <<parameters.additional-tag>>
-          steps:
-            - run:
-                command: |
-                  echo "Digest is: $(</tmp/digest.txt)"
-      - when:
-          condition: <<parameters.additional-tag>>
-          steps:
-            - docker/push:
-                digest-path: /tmp/digest-release.txt
-                image: uscictdocker/mentorpal-classifier
-                tag: "0.0.1"
-            - run:
-                command: |
-                  echo "Digest is: $(</tmp/digest-release.txt)"
-      
+          tag: <<image-tag>>
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
 workflows:
   test-build-deploy:
     jobs:
@@ -103,7 +91,7 @@ workflows:
           requires:
             - test-lint
       - build-and-push:
-          additional-tag: "0.0.1"
+          image-tag: $CIRCLE_SHA
           filters: *only-tagged-releases
           requires:
             - test
