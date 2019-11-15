@@ -38,21 +38,32 @@ jobs:
           command: make test
   build-and-push:
     parameters:
-      image-tag:
-        type: string
-        default: $CIRCLE_SHA
+      is-release-tag:
+        type: boolean
+        default: false
     executor: docker/docker
     steps:
+      - run: 
+          name: "set image tag to (default) sha"
+          command: |
+            echo 'export IMAGE_TAG="$CIRCLE_SHA"' >> $BASH_ENV
+      - when:
+          condition: <<parameters.is-release-tag>>
+          steps:
+            - run: 
+                name: "override image tag to release tag"
+                command: |
+                  echo 'export IMAGE_TAG="$CIRCLE_TAG"' >> $BASH_ENV
       - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
           image: uscictdocker/mentorpal-classifier
-          tag: <<parameters.image-tag>>
+          tag: $IMAGE_TAG
       - docker/push:
           digest-path: /tmp/digest.txt
           image: uscictdocker/mentorpal-classifier
-          tag: <<parameters.image-tag>>
+          tag: $IMAGE_TAG
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
@@ -75,6 +86,7 @@ workflows:
           requires:
             - test
       - build-and-push:
+          is-release-tag: false
           filters: *only-untagged
           requires:
             - approve-build-and-push
@@ -91,7 +103,7 @@ workflows:
           requires:
             - test-lint
       - build-and-push:
-          image-tag: $CIRCLE_SHA
+          is-release-tag: true
           filters: *only-tagged-releases
           requires:
             - test
