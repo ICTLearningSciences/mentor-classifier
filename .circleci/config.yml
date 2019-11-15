@@ -48,11 +48,11 @@ jobs:
       - docker/check
       - docker/build:
           image: uscictdocker/mentorpal-classifier
-          tag: <<image-tag>>
+          tag: <<parameters.image-tag>>
       - docker/push:
           digest-path: /tmp/digest.txt
           image: uscictdocker/mentorpal-classifier
-          tag: <<image-tag>>
+          tag: <<parameters.image-tag>>
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
