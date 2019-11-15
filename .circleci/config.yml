@@ -2,7 +2,7 @@ version: 2.1
 aliases:
   - &only-tagged-releases
     tags:
-      only: /v[0-9]+(\.[0-9]+)*(-[a-z\d\-.]+)?/
+      only: /[0-9]+(\.[0-9]+)*(-[a-z\d\-.]+)?/
     branches:
       ignore: /.*/
   - &only-untagged
