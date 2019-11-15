@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.0
 aliases:
   - &only-tagged-releases
     tags:
@@ -66,7 +66,7 @@ jobs:
                 echo "Digest is: $(</tmp/digest-release.txt)"
       
 workflows:
-  version: 2.1
+  version: 2.0
   test-build-deploy:
     jobs:
       - test-format:
