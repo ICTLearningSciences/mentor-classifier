@@ -47,14 +47,14 @@ jobs:
           condition: <<parameters.is-release-tag>>
           steps:
             - run: 
-                name: "set image tag to commit sha ($CIRCLE_SHA1)"
+                name: "set image tag to commit sha"
                 command: |
                   echo 'export IMAGE_TAG="$CIRCLE_SHA1"' >> $BASH_ENV
       - when:
           condition: <<parameters.is-release-tag>>
           steps:
             - run: 
-                name: "override image tag to release tag ($CIRCLE_TAG")"
+                name: "override image tag to release tag"
                 command: |
                   echo 'export IMAGE_TAG="$CIRCLE_TAG"' >> $BASH_ENV
       - run:
