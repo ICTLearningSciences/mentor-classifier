@@ -4,8 +4,12 @@ import logging
 import os
 from typing import List, Tuple, Union
 
-from mentorpal.checkpoints import ARCH_DEFAULT, CHECKPOINT_ROOT_DEFAULT, find_checkpoint
-from mentorpal.mentor import Mentor
+from mentorpal_classifier.checkpoints import (
+    ARCH_DEFAULT,
+    CHECKPOINT_ROOT_DEFAULT,
+    find_checkpoint,
+)
+from mentorpal_classifier.mentor import Mentor
 
 
 class Classifier(ABC):
@@ -38,7 +42,7 @@ class Classifier(ABC):
 
 class CheckpointClassifierFactory(ABC):
     """
-    A factory that creates a mentorpal.classifiers.Classifier given a checkpoint and mentor[s].
+    A factory that creates a mentorpal_classifier.classifiers.Classifier given a checkpoint and mentor[s].
     Generally associated with a specific architecture, but not a specific checkpoint
     """
 
@@ -47,21 +51,21 @@ class CheckpointClassifierFactory(ABC):
         self, checkpoint: str = None, mentors: Union[str, Mentor, List[str]] = None
     ) -> Classifier:
         """
-        Creates a mentorpal.classifiers.Classifier given a checkpoint and mentor[s]
+        Creates a mentorpal_classifier.classifiers.Classifier given a checkpoint and mentor[s]
 
         Args:
             checkpoint: id for the checkpoint. Defaults to newest found (alpha by name)
             mentors: mentor[s] used in classifier. Defaults to all found
 
         Returns:
-            classifier: (mentorpal.classifiers.Classifier)
+            classifier: (mentorpal_classifier.classifiers.Classifier)
         """
         return None
 
 
 class ClassifierFactory:
     """
-    A factory that creates a mentorpal.classifiers.Classifier given mentor[s].
+    A factory that creates a mentorpal_classifier.classifiers.Classifier given mentor[s].
     Generally already associated with a specific architecture and checkpoint
     """
 
@@ -76,13 +80,13 @@ class ClassifierFactory:
 
     def create(self, mentors: Union[str, Mentor, List[str]]) -> Classifier:
         """
-        Creates a mentorpal.classifiers.Classifier given mentor[s]
+        Creates a mentorpal_classifier.classifiers.Classifier given mentor[s]
 
         Args:
             mentors: mentor[s] used in classifier. Defaults to all found
 
         Returns:
-            classifier: (mentorpal.classifiers.Classifier)
+            classifier: (mentorpal_classifier.classifiers.Classifier)
         """
         return self.checkpoint_classifier_factory.create(self.checkpoint, mentors)
 
@@ -101,22 +105,24 @@ def create_classifier(
     mentors: Union[str, List[str]] = None,
 ):
     """
-        Creates a mentorpal.classifiers.Classifier given a checkpoint and mentor[s].
+        Creates a mentorpal_classifier.classifiers.Classifier given a checkpoint and mentor[s].
 
         Args:
             checkpoint_root: (str) root path of checkpoints.
             arch: (str) id for the architecture. If not passed expect to find just one registered
             checkpoint: (str) id for the checkpoint. If not passed looks for newest (alphabetical by name)
-            mentors: (str|mentorpal.mentor.Mentor|list of mentors/mentor ids) mentor[s] used in classifier
+            mentors: (str|mentorpal_classifier.mentor.Mentor|list of mentors/mentor ids) mentor[s] used in classifier
         Returns:
-            classifier: (mentorpal.classifiers.Classifier)
+            classifier: (mentorpal_classifier.classifiers.Classifier)
     """
-    return create_classifier_factory(arch, checkpoint, checkpoint_root).create(mentors)
+    return create_classifier_factory(
+        checkpoint_root=checkpoint_root, arch=arch, checkpoint=checkpoint
+    ).create(mentors)
 
 
 def register_classifier_factory(arch: str, fac: CheckpointClassifierFactory) -> None:
     """
-        Register a mentorpal.classifiers.CheckpointClassifierFactory for an arch
+        Register a mentorpal_classifier.classifiers.CheckpointClassifierFactory for an arch
 
         Args:
             arch: (str) id for the architecture
@@ -130,14 +136,14 @@ def create_classifier_factory(
     checkpoint_root: str = None, arch: str = None, checkpoint: str = None
 ):
     """
-        Creates a mentorpal.classifiers.ClassifierFactory given an arch and checkpoint.
+        Creates a mentorpal_classifier.classifiers.ClassifierFactory given an arch and checkpoint.
 
         Args:
             arch: (str) id for the architecture
             checkpoint: (str) id for the checkpoint
 
         Returns:
-            classifier: (mentorpal.classifiers.ClassifierFactory)
+            classifier: (mentorpal_classifier.classifiers.ClassifierFactory)
     """
     checkpoint_root = checkpoint_root or CHECKPOINT_ROOT_DEFAULT
     arch = arch or ARCH_DEFAULT
@@ -145,7 +151,7 @@ def create_classifier_factory(
         f"create classifier factory checkpoint_root={checkpoint_root} arch={arch} checkpoint={checkpoint}"
     )
     if arch not in _factories_by_arch:
-        import_module(f"mentorpal.classifiers.arch.{arch}")
+        import_module(f"mentorpal_classifier.classifiers.arch.{arch}")
     checkpoint_fac = _factories_by_arch[arch]
     assert isinstance(checkpoint_fac, CheckpointClassifierFactory)
     c_path = find_checkpoint(

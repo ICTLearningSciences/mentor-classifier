@@ -15,7 +15,7 @@ $(TEST_VIRTUAL_ENV):
 
 .PHONY: format
 format: $(TEST_VIRTUAL_ENV)
-	$(TEST_VIRTUAL_ENV)/bin/black mentorpal
+	$(TEST_VIRTUAL_ENV)/bin/black mentorpal_classifier
 
 PHONY: test
 test: $(TEST_VIRTUAL_ENV)

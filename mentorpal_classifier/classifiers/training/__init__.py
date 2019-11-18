@@ -25,7 +25,7 @@ class ClassifierTraining(ABC):
 
 class ClassifierTrainingFactory(ABC):
     """
-    A factory that creates a mentorpal.classifiers.Classifier given a checkpoint and mentor[s].
+    A factory that creates a mentorpal_classifier.classifiers.Classifier given a checkpoint and mentor[s].
     Generally associated with a specific architecture, but not a specific checkpoint
     """
 
@@ -36,10 +36,10 @@ class ClassifierTrainingFactory(ABC):
 
         Args:
             checkpoint: (str) id for the checkpoint
-            mentors: (str|mentorpal.mentor.Mentor|list of mentors/mentor ids) mentor[s] used in classifier
+            mentors: (str|mentorpal_classifier.mentor.Mentor|list of mentors/mentor ids) mentor[s] used in classifier
 
         Returns:
-            classifierTraining: (mentorpal.classifiers.training.ClassifierTraining)
+            classifierTraining: (mentorpal_classifier.classifiers.training.ClassifierTraining)
         """
         pass
 
@@ -49,7 +49,7 @@ _factories_by_arch = {}
 
 def register_classifier_training_factory(arch, fac):
     """
-        Register a mentorpal.classifiers.CheckpointClassifierFactory for an arch
+        Register a mentorpal_classifier.classifiers.CheckpointClassifierFactory for an arch
 
         Args:
             arch: (str) id for the architecture
@@ -61,18 +61,18 @@ def register_classifier_training_factory(arch, fac):
 
 def find_classifier_training_factory(arch):
     """
-        Creates a mentorpal.classifiers.training.ClassifierTrainingFactory given an arch and checkpoint.
+        Creates a mentorpal_classifier.classifiers.training.ClassifierTrainingFactory given an arch and checkpoint.
 
         Args:
             arch: (str) id for the architecture
             checkpoint: (str) id for the checkpoint
 
         Returns:
-            classifier: (mentorpal.classifiers.ClassifierFactory)
+            classifier: (mentorpal_classifier.classifiers.ClassifierFactory)
     """
     assert isinstance(arch, str)
     if arch not in _factories_by_arch:
-        import_module(f"mentorpal.classifiers.arch.{arch}.training")
+        import_module(f"mentorpal_classifier.classifiers.arch.{arch}.training")
     fac = _factories_by_arch[arch]
     assert isinstance(fac, ClassifierTrainingFactory)
     return fac

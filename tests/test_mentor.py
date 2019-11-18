@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from mentorpal.mentor import Mentor, MentorRootNotFoundError
+from mentorpal_classifier.mentor import Mentor, MentorRootNotFoundError
 
 
 @pytest.mark.parametrize(
@@ -250,7 +250,7 @@ def test_it_uses_question_topics_when_no_topics_csv(
     assert m.to_dict() == expected_data
 
 
-@patch("mentorpal.mentor.logging")
+@patch("mentorpal_classifier.mentor.logging")
 @pytest.mark.parametrize(
     "mentor_data_root,mentor_id,expected_data",
     [

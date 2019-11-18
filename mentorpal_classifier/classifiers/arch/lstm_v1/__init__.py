@@ -5,21 +5,21 @@ from tensorflow.keras.models import load_model
 from sklearn.externals import joblib
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-from mentorpal.classifiers import (
+from mentorpal_classifier.classifiers import (
     CheckpointClassifierFactory,
     Classifier,
     register_classifier_factory,
 )
-from mentorpal.mentor import Mentor
-from mentorpal.nltk_preprocessor import NLTKPreprocessor
-from mentorpal.w2v import W2V
-from mentorpal.utils import sanitize_string
+from mentorpal_classifier.mentor import Mentor
+from mentorpal_classifier.nltk_preprocessor import NLTKPreprocessor
+from mentorpal_classifier.w2v import W2V
+from mentorpal_classifier.utils import sanitize_string
 
 # store the ARCH because we use it several places
 ARCH = "lstm_v1"
 
 
-# NOTE: classifiers MUST extend abstract base class `mentorpal.classifiers.Classifier`
+# NOTE: classifiers MUST extend abstract base class `mentorpal_classifier.classifiers.Classifier`
 class LSTMClassifier(Classifier):
     """
     Create a classifier instance for a mentor
@@ -170,6 +170,6 @@ class __ClassifierFactory(CheckpointClassifierFactory):
         return LSTMClassifier(mentors, checkpoint)
 
 
-# NOTE: always make sure this module lives in `mentorpal.classifiers.arch.${ARCH}`
+# NOTE: always make sure this module lives in `mentorpal_classifier.classifiers.arch.${ARCH}`
 # so that it can be discovered/loaded by arch name
 register_classifier_factory(ARCH, __ClassifierFactory())

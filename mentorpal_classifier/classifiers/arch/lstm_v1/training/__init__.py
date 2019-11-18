@@ -13,15 +13,15 @@ from sklearn.linear_model import RidgeClassifier
 from sklearn.model_selection import cross_val_score, cross_val_predict
 
 from .. import LSTMClassifier
-from mentorpal.classifiers.training import (
+from mentorpal_classifier.classifiers.training import (
     ClassifierTraining,
     ClassifierTrainingFactory,
     register_classifier_training_factory,
 )
-from mentorpal.mentor import Mentor
-from mentorpal.nltk_preprocessor import NLTKPreprocessor
-from mentorpal.utils import normalize_topics
-from mentorpal.w2v import W2V
+from mentorpal_classifier.mentor import Mentor
+from mentorpal_classifier.nltk_preprocessor import NLTKPreprocessor
+from mentorpal_classifier.utils import normalize_topics
+from mentorpal_classifier.w2v import W2V
 
 
 # CheckpointClassifierFactory impl that will get registered globally for this arch ('lstm_v1')
@@ -30,7 +30,7 @@ class __ClassifierTrainingFactory(ClassifierTrainingFactory):
         return TrainLSTMClassifier(mentors, checkpoint)
 
 
-# NOTE: always make sure this module lives in `mentorpal.classifiers.arch.${ARCH}`
+# NOTE: always make sure this module lives in `mentorpal_classifier.classifiers.arch.${ARCH}`
 # so that it can be discovered/loaded by arch name
 register_classifier_training_factory(
     LSTMClassifier.get_classifier_arch(), __ClassifierTrainingFactory()
