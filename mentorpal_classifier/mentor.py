@@ -12,7 +12,7 @@ try:
 except ImportError:
     from yaml import Loader
 
-from mentorpal.utils import normalize_topics, sanitize_string
+from mentorpal_classifier.utils import normalize_topics, sanitize_string
 
 STRIP_TOPICS = [
     "navy",

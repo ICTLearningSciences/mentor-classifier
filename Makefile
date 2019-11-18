@@ -15,7 +15,7 @@ $(TEST_VIRTUAL_ENV):
 
 .PHONY: format
 format: $(TEST_VIRTUAL_ENV)
-	$(TEST_VIRTUAL_ENV)/bin/black mentorpal
+	$(TEST_VIRTUAL_ENV)/bin/black mentorpal_classifier
 
 PHONY: test
 test: $(TEST_VIRTUAL_ENV)
@@ -30,7 +30,7 @@ test-env-create: virtualenv-installed
 
 .PHONY: test-format
 test-format: $(TEST_VIRTUAL_ENV)
-	$(TEST_VIRTUAL_ENV)/bin/black --check mentorpal
+	$(TEST_VIRTUAL_ENV)/bin/black --check mentorpal_classifier
 
 .PHONY: test-lint
 test-lint: $(TEST_VIRTUAL_ENV)
