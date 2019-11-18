@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
-DOCKER_IMAGE?=mentorpal-classifier
-DOCKER_CONTAINER=mentorpal-classifier
+DOCKER_IMAGE?=mentor-classifier
+DOCKER_CONTAINER=mentor-classifier
 CLASSIFIER_ROOT=$(shell pwd)
 PROJECT_ROOT?=$(shell git rev-parse --show-toplevel 2> /dev/null)
 PWD=$(shell pwd)
@@ -15,7 +15,7 @@ $(TEST_VIRTUAL_ENV):
 
 .PHONY: format
 format: $(TEST_VIRTUAL_ENV)
-	$(TEST_VIRTUAL_ENV)/bin/black mentorpal_classifier
+	$(TEST_VIRTUAL_ENV)/bin/black mentor_classifier
 
 PHONY: test
 test: $(TEST_VIRTUAL_ENV)
@@ -30,7 +30,7 @@ test-env-create: virtualenv-installed
 
 .PHONY: test-format
 test-format: $(TEST_VIRTUAL_ENV)
-	$(TEST_VIRTUAL_ENV)/bin/black --check mentorpal_classifier
+	$(TEST_VIRTUAL_ENV)/bin/black --check mentor_classifier
 
 .PHONY: test-lint
 test-lint: $(TEST_VIRTUAL_ENV)

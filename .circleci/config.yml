@@ -59,16 +59,16 @@ jobs:
                   echo 'export IMAGE_TAG="$CIRCLE_TAG"' >> $BASH_ENV
       - run:
           name: report tag
-          command: echo "building tag uscictdocker/mentorpal-classifier:${IMAGE_TAG}..."
+          command: echo "building tag uscictdocker/mentor-classifier:${IMAGE_TAG}..."
       - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
-          image: uscictdocker/mentorpal-classifier
+          image: uscictdocker/mentor-classifier
           tag: ${IMAGE_TAG}
       - docker/push:
           digest-path: /tmp/digest.txt
-          image: uscictdocker/mentorpal-classifier
+          image: uscictdocker/mentor-classifier
           tag: ${IMAGE_TAG}
       - run:
           command: |

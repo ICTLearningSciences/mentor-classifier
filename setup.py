@@ -20,10 +20,10 @@ packages = find_packages()
 requirements = _read_dependencies()
 
 setup(
-    name="mentorpal-classifiers",
+    name="mentor-classifiers",
     version="1.0.0",
     author_email="larrykirschner@gmail.com",
-    description="core classifier code for mentorpal",
+    description="core classifier code for mentor",
     packages=packages,
     install_requires=requirements,
 )

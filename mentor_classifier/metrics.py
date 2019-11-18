@@ -1,7 +1,7 @@
 import csv
 import os
 
-from mentorpal_classifier.utils import sanitize_string
+from mentor_classifier.utils import sanitize_string
 
 
 class Metrics:

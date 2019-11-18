@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from mentorpal_classifier.checkpoints import find_checkpoint
+from mentor_classifier.checkpoints import find_checkpoint
 from .helpers import resource_root_checkpoints_for_test
 
 CHECKPOINTS_ROOT = resource_root_checkpoints_for_test(__file__)
