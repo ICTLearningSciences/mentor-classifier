@@ -8,10 +8,13 @@ shift
 ARGS=""
 case ${CMD} in
     'checkpoint-test' )
-        ARGS="--entrypoint /app/bin/checkpoint_test.py $@"
+        ARGS="--entrypoint /app/bin/mentor_classifier_checkpoint_test $@"
         ;;
     'checkpoint-train' )
-        ARGS="--entrypoint /app/bin/checkpoint_train.py $@"
+        ARGS="--entrypoint /app/bin/mentor_classifier_checkpoint_train $@"
+        ;;
+    'shell' )
+        ARGS="--entrypoint /bin/bash $@"
         ;;
     * )
         echo "unknown command ${CMD}"
@@ -20,4 +23,4 @@ case ${CMD} in
 esac
 
 
-${BIN}/mentor_classifier_run $ARGS
+${BIN}/mentor_classifier_docker_run $ARGS

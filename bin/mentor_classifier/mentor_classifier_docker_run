@@ -64,13 +64,11 @@ DOCKER_CONTAINER=mentor-classifier
 DOCKER_IMAGE=""
 CHECKPOINT=""
 CHECKPOINT_ROOT=${CHECKPOINT_ROOT:-$(pwd)/checkpoint}
-ENTRYPOINT=""
+ENTRYPOINT="/bin/bash"
 MENTOR=""
 MENTOR_ROOT=${MENTOR_ROOT:-$(pwd)/mentors}
-TEST_MENTOR=""
 
-while getopts_long "c: arch: checkpoint: checkpoint-root: container-name: cmd: docker-env: entrypoint: image: mentor: mentor-root: test-mentor:" OPTKEY; do
-  echo "NEXT ARG ${OPTKEY}=${OPTARG}"
+while getopts_long "c: arch: checkpoint: checkpoint-root: container-name: docker-cmd: docker-env: entrypoint: image: mentor: mentor-root:" OPTKEY; do
   case ${OPTKEY} in
     'arch' )
       ARCH="${OPTARG}"
@@ -81,7 +79,7 @@ while getopts_long "c: arch: checkpoint: checkpoint-root: container-name: cmd: d
     'checkpoint-root' )
       CHECKPOINT_ROOT="${OPTARG}"
       ;;
-    'c' | 'cmd' )
+    'c' | 'docker-cmd' )
       DOCKER_CMD="${OPTARG}"
       ;;
     'container-name' )
@@ -101,16 +99,12 @@ while getopts_long "c: arch: checkpoint: checkpoint-root: container-name: cmd: d
       ;;
     'mentor-root' )
       MENTOR_ROOT="${OPTARG}"
-      ;;
-    'test-mentor' )
-      TEST_MENTOR="${OPTARG}"
+      echo "\n\n\SET MENTOR_ROOT=${MENTOR_ROOT}\n\n\n"
       ;;
   esac
 done
 shift $((OPTIND -1))
 
-echo "THIS IS THE COMMAND
-
 docker run \
         -it \
         --rm \
@@ -120,28 +114,7 @@ docker run \
         -v ${BIN}:/app/bin \
         -e ARCH=${ARCH} \
         -e CHECKPOINT=${CHECKPOINT} \
-        -e MENTOR_ROOT=${MENTOR_ROOT} \
         -e MENTOR=${MENTOR} \
-        -e TEST_MENTOR=${TEST_MENTOR} \
-        ${ADDITIONAL_ARGS} \
-        --workdir /app \
-        --entrypoint ${ENTRYPOINT} \
-    ${DOCKER_IMAGE} ${DOCKER_CMD}
-
-
-"
-docker run \
-        -it \
-        --rm \
-        --name ${DOCKER_CONTAINER} \
-        -v ${CHECKPOINT_ROOT}:/app/checkpoint \
-        -v ${MENTOR_ROOT}:/app/mentors \
-        -v ${BIN}:/app/bin \
-        -e ARCH=${ARCH} \
-        -e CHECKPOINT=${CHECKPOINT} \
-        -e MENTOR_ROOT=${MENTOR_ROOT} \
-        -e MENTOR=${MENTOR} \
-        -e TEST_MENTOR=${TEST_MENTOR} \
         ${ADDITIONAL_ARGS} \
         --workdir /app \
         --entrypoint ${ENTRYPOINT} \

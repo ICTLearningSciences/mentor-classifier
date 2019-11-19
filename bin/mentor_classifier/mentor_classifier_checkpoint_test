@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+python -c "from mentor_classifier.tools.checkpoint import test; test();"
