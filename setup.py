@@ -1,3 +1,4 @@
+import os
 from setuptools import setup, find_packages
 
 # from os import path
@@ -15,9 +16,9 @@ def _read_dependencies():
     with open(requirements_file) as fin:
         return [line.strip() for line in fin if line]
 
-
 packages = find_packages()
 requirements = _read_dependencies()
+scripts = [os.path.join("bin", "mentor_classifier", f) for f in os.listdir(os.path.join("bin", "mentor_classifier"))]
 
 setup(
     name="mentor-classifiers",
@@ -26,4 +27,5 @@ setup(
     description="core classifier code for mentor",
     packages=packages,
     install_requires=requirements,
+    scripts=scripts
 )
