@@ -99,7 +99,6 @@ while getopts_long "c: arch: checkpoint: checkpoint-root: container-name: docker
       ;;
     'mentor-root' )
       MENTOR_ROOT="${OPTARG}"
-      echo "\n\n\SET MENTOR_ROOT=${MENTOR_ROOT}\n\n\n"
       ;;
   esac
 done
