@@ -1,13 +1,14 @@
+import datetime
 import logging
 import os
 
 from mentor_classifier.mentor import Mentor
 from mentor_classifier.metrics import Metrics
 from mentor_classifier.classifiers import checkpoint_path, create_classifier
-from mentor_classifier.classifiers import checkpoint_path
 from mentor_classifier.classifiers.training import find_classifier_training_factory
 
 logging.basicConfig(level=logging.INFO)
+
 
 def test() -> None:
     ARCH = os.getenv("ARCH")
@@ -19,7 +20,10 @@ def test() -> None:
     print(f"CHECKPOINT {CHECKPOINT}")
     print(f"MENTOR {MENTOR}")
     classifier = create_classifier(
-        checkpoint_root=CHECKPOINT_ROOT, arch=ARCH, checkpoint=CHECKPOINT, mentors=MENTOR
+        checkpoint_root=CHECKPOINT_ROOT,
+        arch=ARCH,
+        checkpoint=CHECKPOINT,
+        mentors=MENTOR,
     )
     metrics = Metrics()
     accuracy = metrics.test_accuracy(classifier, TEST_SET)
@@ -27,6 +31,7 @@ def test() -> None:
     print(f"  CHECKPOINT {CHECKPOINT}")
     print(f"  MENTOR {MENTOR}")
     print(f"  ACCURACY: {accuracy}")
+
 
 def train() -> None:
     ARCH = os.getenv("ARCH")

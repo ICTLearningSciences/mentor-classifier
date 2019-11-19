@@ -16,6 +16,7 @@ def _read_dependencies():
     with open(requirements_file) as fin:
         return [line.strip() for line in fin if line]
 
+
 packages = find_packages()
 requirements = _read_dependencies()
 scripts = [os.path.join("bin", "mentor_classifier", f) for f in os.listdir(os.path.join("bin", "mentor_classifier"))]
