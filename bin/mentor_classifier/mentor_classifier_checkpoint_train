@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
+set -o errexit
 python -c "from mentor_classifier.tools.checkpoint import train; train();"
