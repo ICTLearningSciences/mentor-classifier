@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -o errexit
+
+BIN="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+CMD=$1
+shift
+
+ARGS=""
+case ${CMD} in
+    'checkpoint-test' )
+        ARGS="--entrypoint /app/bin/mentor_classifier_checkpoint_test $@"
+        ;;
+    'checkpoint-train' )
+        ARGS="--entrypoint /app/bin/mentor_classifier_checkpoint_train $@"
+        ;;
+    'shell' )
+        ARGS="--entrypoint /bin/bash $@"
+        ;;
+    * )
+        echo "unknown command ${CMD}"
+        exit 1
+        ;;
+esac
+
+
+${BIN}/mentor_classifier_docker_run $ARGS
