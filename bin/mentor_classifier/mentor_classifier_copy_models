@@ -2,7 +2,8 @@
 
 BIN="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-source "${BIN}/lib/getopts_long.bash"
+source "${BIN}/mentor_classifier_getopts_long.bash"
+
 
 NEWEST_CHECKPOINT=0
 ARCH=lstm_v1
