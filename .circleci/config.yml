@@ -9,12 +9,9 @@ aliases:
     tags:
       ignore: /.*/
 executors:
-  node:
-    docker:
-      - image: circleci/node:12.4
   python:
     docker:
-      - image: circleci/python:3.6.9
+      - image: circleci/python:3.6.11
 orbs:
   docker: circleci/docker@0.5.17
 jobs:
@@ -26,7 +23,7 @@ jobs:
           name: Test format for python
           command: make test-format
   test-license:
-    executor: node
+    executor: python
     steps:
       - checkout
       - run:

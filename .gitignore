@@ -11,4 +11,3 @@ dist
 .coverage.*
 htmlcov
 *.egg-info
-node_modules
