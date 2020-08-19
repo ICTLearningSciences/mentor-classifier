@@ -11,7 +11,7 @@ aliases:
 executors:
   python:
     docker:
-      - image: circleci/python:3.6.9
+      - image: circleci/python:3.6.11
 orbs:
   docker: circleci/docker@0.5.17
 jobs:
@@ -22,6 +22,13 @@ jobs:
       - run:
           name: Test format for python
           command: make test-format
+  test-license:
+    executor: python
+    steps:
+      - checkout
+      - run:
+          name: Test license
+          command: make test-license
   test-lint:
     executor: python
     steps:
@@ -80,6 +87,8 @@ workflows:
           filters: *only-untagged
       - test-lint:
           filters: *only-untagged
+      - test-license:
+          filters: *only-untagged
       - test:
           filters: *only-untagged
       - approve-build-and-push:
@@ -89,6 +98,7 @@ workflows:
             - test
             - test-format
             - test-lint
+            - test-license
       - build-and-push:
           is-release-tag: false
           filters: *only-untagged
@@ -102,6 +112,8 @@ workflows:
           filters: *only-tagged-releases
       - test-lint:
           filters: *only-tagged-releases
+      - test-license:
+          filters: *only-tagged-releases
       - build-and-push:
           is-release-tag: true
           filters: *only-tagged-releases
@@ -109,4 +121,4 @@ workflows:
             - test
             - test-format
             - test-lint
-
+            - test-license

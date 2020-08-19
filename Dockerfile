@@ -1,6 +1,7 @@
 FROM continuumio/miniconda3
 ARG CONDA_ENV=mentor
 ENV mentor_CONDA_ENV=mentor
+RUN apt-get update && apt-get install -y git
 RUN conda create --name=${mentor_CONDA_ENV} python=3.6 pip
 RUN echo "source activate ${mentor_CONDA_ENV}" > ~/.bashrc
 ENV PATH /opt/conda/envs/${mentor_CONDA_ENV}/bin:$PATH
