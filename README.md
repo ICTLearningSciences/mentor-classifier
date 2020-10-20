@@ -12,6 +12,14 @@ easy to run from a website project.
 Development
 -----------
 
+#### Required Software
+
+- make
+- git + git lfs
+- pyenv (if you have pyenv installed will help ensure the correct python version)
+
+#### Tests
+
 Any changes made to this repo should be covered by tests. To run the existing tests:
 
 ```
