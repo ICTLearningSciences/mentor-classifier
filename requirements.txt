@@ -4,6 +4,6 @@ nltk==3.4.5
 numpy==1.16.4 
 pandas==0.23.4 
 scikit-learn==0.20.1 
-tensorflow==1.15.4
+tensorflow==2.5.1
 PyYAML==5.1.2
 licenseheaders @ git+http://github.com/kycarr/licenseheaders.git@master#egg=licenseheaders
